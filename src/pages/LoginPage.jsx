@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Building2, Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { login } from '../services/auth';
 
@@ -118,9 +119,9 @@ function LoginPage({ onLoginSuccess }) {
                 />
                 Se souvenir de moi
               </label>
-              <a href="#" className="text-teal-400 hover:text-teal-300 font-medium transition-colors">
+             <Link to="/forgot-password" className="text-teal-400 hover:text-teal-300 font-medium transition-colors">
                 Mot de passe oublié ?
-              </a>
+              </Link>
             </div>
 
             {error && (
