@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { getPublicSettings } from '../services/settings';
 import {
   LayoutDashboard, Users, Clock, Calendar, Bell, Wallet,
   Briefcase, FileText, Building2, UserCircle,
@@ -18,7 +20,13 @@ const navItems = [
 
 function Sidebar({ expanded, onExpand, onCollapse }) {
   const location = useLocation();
+  const [companyName, setCompanyName] = useState('Gestion RH');
 
+  useEffect(() => {
+    getPublicSettings().then((s) => {
+      if (s.company_name) setCompanyName(s.company_name);
+    });
+  }, []);
   return (
     <aside
       onMouseEnter={onExpand}
@@ -30,7 +38,7 @@ function Sidebar({ expanded, onExpand, onCollapse }) {
         <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--color-primary)' }}>
           <Building2 className="w-5 h-5 text-white" />
         </div>
-        {expanded && <span className="font-poppins font-semibold truncate" style={{ color: 'var(--color-text)' }}>Gestion RH</span>}
+       {expanded && <span className="font-poppins font-semibold truncate" style={{ color: 'var(--color-text)' }}>{companyName}</span>}
       </div>
 
       <nav className="flex-1 px-2.5 py-4 space-y-1 overflow-hidden">

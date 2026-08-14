@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { login } from '../services/auth';
+import { getPublicSettings } from '../services/settings';
 
 function LoginPage({ onLoginSuccess }) {
+  const [companyName, setCompanyName] = useState('Gestion RH');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getPublicSettings().then((s) => {
+      if (s.company_name) setCompanyName(s.company_name);
+    });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +49,7 @@ function LoginPage({ onLoginSuccess }) {
             <div className="w-10 h-10 rounded-xl bg-teal-500/20 backdrop-blur-sm border border-teal-400/30 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-teal-300" />
             </div>
-            <span className="text-white font-semibold text-lg">Gestion RH</span>
+            <span className="text-white font-semibold text-lg">{companyName}</span>
           </div>
 
           <div>
@@ -53,7 +61,7 @@ function LoginPage({ onLoginSuccess }) {
             </p>
           </div>
 
-          <p className="text-slate-400 text-xs">© 2026 Gestion RH</p>
+          <p className="text-slate-400 text-xs">© 2026 {companyName}</p>
         </div>
 
         <div className="flex-1 p-8 md:p-10">
@@ -61,7 +69,7 @@ function LoginPage({ onLoginSuccess }) {
             <div className="w-9 h-9 rounded-lg bg-teal-500/20 border border-teal-400/30 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-teal-300" />
             </div>
-            <span className="text-white font-semibold text-lg">Gestion RH</span>
+            <span className="text-white font-semibold text-lg">{companyName}</span>
           </div>
 
           <h2 className="text-2xl font-bold text-white mb-1.5">Connexion</h2>
@@ -119,7 +127,7 @@ function LoginPage({ onLoginSuccess }) {
                 />
                 Se souvenir de moi
               </label>
-             <Link to="/forgot-password" className="text-teal-400 hover:text-teal-300 font-medium transition-colors">
+              <Link to="/forgot-password" className="text-teal-400 hover:text-teal-300 font-medium transition-colors">
                 Mot de passe oublié ?
               </Link>
             </div>

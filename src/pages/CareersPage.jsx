@@ -2,15 +2,21 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, MapPin, Briefcase, ArrowRight } from 'lucide-react';
 import api from '../services/api';
+import { getPublicSettings } from '../services/settings';
 
 function CareersPage() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [companyName, setCompanyName] = useState('Gestion RH');
 
   useEffect(() => {
     api.get('/public/job-posts')
       .then((res) => { setJobs(res.data.data); setLoading(false); })
       .catch(() => setLoading(false));
+
+    getPublicSettings().then((s) => {
+      if (s.company_name) setCompanyName(s.company_name);
+    });
   }, []);
 
   return (
@@ -20,7 +26,7 @@ function CareersPage() {
           <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#1E3A5F' }}>
             <Building2 className="w-5 h-5 text-white" />
           </div>
-          <span className="font-poppins font-semibold text-slate-900">Gestion RH — Carrières</span>
+          <span className="font-poppins font-semibold text-slate-900">{companyName} — Carrières</span>
         </div>
 
         <h1 className="font-poppins text-3xl font-bold text-slate-900 mb-2">Nos offres d'emploi</h1>
